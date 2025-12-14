@@ -1,6 +1,9 @@
 package com.zetta.ruleengine.config;
 
-import com.zetta.ruleengine.engine.condition.ConditionGroup;
+import com.zetta.ruleengine.engine.condition.Condition;
+import com.zetta.ruleengine.engine.condition.creator.ConditionFactory;
+import com.zetta.ruleengine.engine.condition.LogicalOperation;
+import com.zetta.ruleengine.engine.condition.dto.ConditionDto;
 import com.zetta.ruleengine.engine.transformation.TransformationRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 
 @Configuration
@@ -32,13 +36,22 @@ public class RuleConfig {
     }
 
     @Bean
-    public List<ConditionGroup> conditionsGroups() {
+    public List<Condition> conditions() {
         try (InputStream is = Files.newInputStream(Paths.get(conditionPath))) {
-            List<ConditionGroup> conditionGroupDefinitions = objectMapper.readValue(is, objectMapper
+            List<ConditionDto> conditionDtoList = objectMapper.readValue(is, objectMapper
                     .getTypeFactory()
-                    .constructCollectionType(List.class, ConditionGroup.class));
-            log.info("Loaded conditions: {}", conditionGroupDefinitions);
-            return conditionGroupDefinitions;
+                    .constructCollectionType(List.class, ConditionDto.class));
+
+            List<Condition> conditions = new LinkedList<>();
+            for (ConditionDto conditionDto : conditionDtoList) {
+                if (!LogicalOperation.isValid(conditionDto.getLogicalOperation())) {
+                    log.warn("Invalid logical operation - {}", conditionDto.getLogicalOperation());
+                }
+                conditions.add(ConditionFactory.create(conditionDto));
+            }
+
+            log.info("Loaded conditions: {}", conditionDtoList);
+            return conditions;
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load conditions", e);
         }
@@ -50,6 +63,7 @@ public class RuleConfig {
             List<TransformationRule> transformationRules = objectMapper.readValue(is, objectMapper
                     .getTypeFactory()
                     .constructCollectionType(List.class, TransformationRule.class));
+
             log.info("Loaded transformation rules: {}", transformationRules);
             return transformationRules;
         } catch (IOException e) {
