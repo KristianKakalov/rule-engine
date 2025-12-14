@@ -1,6 +1,6 @@
 package com.zetta.ruleengine.config;
 
-import com.zetta.ruleengine.engine.condition.ConditionDefinition;
+import com.zetta.ruleengine.engine.condition.ConditionGroup;
 import com.zetta.ruleengine.engine.transformation.TransformationRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +32,13 @@ public class RuleConfig {
     }
 
     @Bean
-    public List<ConditionDefinition> conditions() {
+    public List<ConditionGroup> conditionsGroups() {
         try (InputStream is = Files.newInputStream(Paths.get(conditionPath))) {
-            List<ConditionDefinition> conditionDefinitions = objectMapper.readValue(is, objectMapper
+            List<ConditionGroup> conditionGroupDefinitions = objectMapper.readValue(is, objectMapper
                     .getTypeFactory()
-                    .constructCollectionType(List.class, ConditionDefinition.class));
-            log.info("Loaded conditions: {}", conditionDefinitions);
-            return conditionDefinitions;
+                    .constructCollectionType(List.class, ConditionGroup.class));
+            log.info("Loaded conditions: {}", conditionGroupDefinitions);
+            return conditionGroupDefinitions;
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load conditions", e);
         }

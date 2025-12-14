@@ -1,14 +1,8 @@
 package com.zetta.ruleengine.engine.condition;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import tools.jackson.databind.JsonNode;
 
-@Data
-public class Condition {
-    @JsonProperty("field")
-    private String field;
-    @JsonProperty("operator")
-    private String operator;
-    @JsonProperty("value")
-    private Object value;
-}
+public record Condition(@JsonProperty("field") String field,
+                        @JsonProperty("operator") String operator,
+                        @JsonProperty("value") JsonNode value) {}
