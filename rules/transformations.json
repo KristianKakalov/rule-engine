@@ -2,7 +2,9 @@
   {
     "type": "set",
     "target": "user.fullName",
-    "expression": "user.firstName + ' ' + user.lastName"
+    "value": {
+      "concat": ["user.firstName", " ", "user.lastName"]
+    }
   },
   {
     "type": "increment",
@@ -12,5 +14,12 @@
   {
     "type": "remove",
     "target": "user.lastName"
+  },
+  {
+    "type": "set",
+    "target": "order.totalWithTax",
+    "value": {
+      "add": ["order.amount", 10]
+    }
   }
 ]
