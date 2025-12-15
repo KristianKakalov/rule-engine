@@ -1,4 +1,4 @@
-package com.zetta.ruleengine.engine.condition.evaluator;
+package com.zetta.ruleengine.engine.condition.evaluator.util;
 
 import com.zetta.ruleengine.engine.condition.dto.ConditionExpression;
 import com.zetta.ruleengine.util.JsonUtil;

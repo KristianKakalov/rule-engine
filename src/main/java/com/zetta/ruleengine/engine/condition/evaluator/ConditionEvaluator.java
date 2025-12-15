@@ -9,7 +9,7 @@ import tools.jackson.databind.JsonNode;
 import java.util.List;
 
 @Component
-public class ConditionEvaluator {
+public class ConditionEvaluator implements Evaluator {
     private static final Logger log = LoggerFactory.getLogger(ConditionEvaluator.class);
 
     private final List<Condition> conditions;
@@ -18,6 +18,7 @@ public class ConditionEvaluator {
         this.conditions = conditions;
     }
 
+    @Override
     public boolean evaluate(JsonNode data) {
         for (Condition condition : conditions) {
             if (condition.evaluate(data)) {

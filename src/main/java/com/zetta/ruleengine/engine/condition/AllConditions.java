@@ -1,7 +1,7 @@
 package com.zetta.ruleengine.engine.condition;
 
 import com.zetta.ruleengine.engine.condition.dto.ConditionExpression;
-import com.zetta.ruleengine.engine.condition.evaluator.ConditionExpressionEvaluatorUtil;
+import com.zetta.ruleengine.engine.condition.evaluator.util.ConditionExpressionEvaluatorUtil;
 import tools.jackson.databind.JsonNode;
 
 import java.util.List;
