@@ -22,7 +22,7 @@ public class ConditionExpressionEvaluatorUtil {
                 return false;
             }
 
-            return compareValues(conditionExpression.getOperator(), fieldValueOptional.get(),  expectedValue);
+            return applyOperator(conditionExpression.getOperator(), fieldValueOptional.get(), expectedValue);
 
         } catch (Exception e) {
             log.error("Error evaluating condition {}: {}", conditionExpression, e.getMessage());
@@ -30,7 +30,7 @@ public class ConditionExpressionEvaluatorUtil {
         }
     }
 
-    private static boolean compareValues(String operator, JsonNode actualValue, JsonNode expectedValue) {
+    private static boolean applyOperator(String operator, JsonNode actualValue, JsonNode expectedValue) {
         try {
             return switch (operator) {
                 case "==" -> compareEquals(actualValue, expectedValue);
@@ -39,6 +39,8 @@ public class ConditionExpressionEvaluatorUtil {
                 case ">=" -> compareGreaterThanOrEqual(actualValue, expectedValue);
                 case "<" -> compareLessThan(actualValue, expectedValue);
                 case "<=" -> compareLessThanOrEqual(actualValue, expectedValue);
+                case "isEmpty" -> isEmptyString(actualValue, expectedValue);
+                case "equals" -> equalsString(actualValue, expectedValue);
                 default -> {
                     log.warn("Unknown operator: {}", operator);
                     yield false;
@@ -48,6 +50,20 @@ public class ConditionExpressionEvaluatorUtil {
             log.error("Comparison error: {} {} {}", actualValue, operator, expectedValue, e);
             return false;
         }
+    }
+
+    private static boolean equalsString(JsonNode actualValue, JsonNode expectedValue) {
+        if (actualValue.isString() && expectedValue.isString()) {
+            return actualValue.asString().equals(expectedValue.asString());
+        }
+        return false;
+    }
+
+    private static boolean isEmptyString(JsonNode actualValue, JsonNode expectedValue) {
+        if (actualValue.isString() && expectedValue.isBoolean()) {
+            return actualValue.asString().isEmpty() == expectedValue.asBoolean();
+        }
+        return false;
     }
 
     private static boolean compareEquals(JsonNode actualValue, JsonNode expectedValue) {

@@ -100,11 +100,12 @@ class ConditionEvaluatorTest {
     void testWhenNoneConditionsGroupMatches() {
         // arrange
         JsonNode data = objectMapper.readTree("""
-                {"age": 16, "hasLicense": false}""");
+                {"country": "Greece"}
+                """);
 
-        Condition condition = new NoneConditions("minor-no-license", List.of(
-                new ConditionExpression("age", ">=", objectMapper.readTree("18")),
-                new ConditionExpression("hasLicense", "==", objectMapper.readTree("true"))
+        Condition condition = new NoneConditions("unsupported-country", List.of(
+                new ConditionExpression("country", "equals", objectMapper.readTree("\"Greece\"")),
+                new ConditionExpression("username", "isEmpty",objectMapper.readTree("true"))
         ));
 
         ConditionEvaluator evaluator = new ConditionEvaluator(List.of(condition));
@@ -113,7 +114,7 @@ class ConditionEvaluatorTest {
         boolean result = evaluator.evaluate(data);
 
         // assert
-        Assertions.assertTrue(result);
+        Assertions.assertFalse(result);
     }
 
     @Test

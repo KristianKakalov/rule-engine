@@ -1,5 +1,16 @@
 [
   {
+    "id": "required-fields",
+    "logicalOperation": "all",
+    "conditionExpressions": [
+      { "field": "user.username", "operator": "isEmpty", "value": false },
+      { "field": "user.firstName", "operator": "isEmpty", "value": false },
+      { "field": "user.lastName", "operator": "isEmpty", "value": false },
+      { "field": "user.country", "operator": "isEmpty", "value": false },
+      { "field": "orderAmount", "operator": ">", "value": 0 }
+    ]
+  },
+  {
     "id": "high-value-adult",
     "logicalOperation": "all",
     "conditionExpressions": [
@@ -13,6 +24,13 @@
     "conditionExpressions": [
       { "field": "user.isVip", "operator": "==", "value": true },
       { "field": "orderAmount", "operator": ">", "value": 500 }
+    ]
+  },
+  {
+    "id": "unsupported-region",
+    "logicalOperation": "none",
+    "conditionExpressions": [
+      { "field": "user.country", "operator": "equals", "value": "Greece" }
     ]
   }
 ]
