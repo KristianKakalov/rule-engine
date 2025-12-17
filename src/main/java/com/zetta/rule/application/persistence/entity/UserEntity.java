@@ -25,7 +25,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", updatable = false)
     private String username;
 
     @Column(name = "full_name")
