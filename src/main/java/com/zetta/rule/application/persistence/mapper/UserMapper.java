@@ -24,8 +24,6 @@ public class UserMapper {
         if (userNode.has("country")) user.setCountry(userNode.get("country").asString());
         if (userNode.has("age") && userNode.get("age").isInt())
             user.setAge(userNode.get("age").asInt());
-        if (userNode.has("isVip") && userNode.get("isVip").isBoolean())
-            user.setIsVip(userNode.get("isVip").asBoolean());
         if (userNode.has("visits") && userNode.get("visits").isInt())
             user.setVisits(userNode.get("visits").asInt());
     }

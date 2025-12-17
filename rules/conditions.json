@@ -7,23 +7,16 @@
       { "field": "user.firstName", "operator": "isEmpty", "value": false },
       { "field": "user.lastName", "operator": "isEmpty", "value": false },
       { "field": "user.country", "operator": "isEmpty", "value": false },
+      { "field": "user.age", "operator": ">", "value": 0 },
       { "field": "order.amount", "operator": ">", "value": 0 }
     ]
   },
   {
-    "id": "high-value-adult",
-    "logicalOperation": "all",
-    "conditionExpressions": [
-      { "field": "order.amount", "operator": ">", "value": 100 },
-      { "field": "user.age", "operator": ">=", "value": 18 }
-    ]
-  },
-  {
-    "id": "vip-user",
+    "id": "adult-user",
     "logicalOperation": "any",
     "conditionExpressions": [
-      { "field": "user.isVip", "operator": "==", "value": true },
-      { "field": "order.amount", "operator": ">", "value": 500 }
+      { "field": "user.isAdult", "operator": "==", "value": true },
+      { "field": "user.age", "operator": ">=", "value": 18 }
     ]
   },
   {

@@ -15,7 +15,7 @@ import tools.jackson.databind.JsonNode;
 
 @Service
 @AllArgsConstructor
-public class DataPersistenceService {
+public class DataPersistenceService implements PersistenceService {
 
     private static final Logger log = LoggerFactory.getLogger(DataPersistenceService.class);
 
@@ -25,6 +25,7 @@ public class DataPersistenceService {
     private final UserMapper userMapper;
     private final OrderMapper orderMapper;
 
+    @Override
     @Transactional
     public void persistMessage(String messageId, JsonNode data) {
         try {
@@ -37,7 +38,7 @@ public class DataPersistenceService {
 
             orderRepository.save(order);
 
-            log.info("Successfully persisted message {} with user {} and orderId {}",
+            log.info("Successfully persisted message: {} with user: {} and orderId: {}",
                     messageId, user.getUsername(), order.getId());
 
         } catch (Exception e) {

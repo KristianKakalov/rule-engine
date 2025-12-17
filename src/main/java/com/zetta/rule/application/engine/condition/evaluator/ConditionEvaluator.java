@@ -21,12 +21,12 @@ public class ConditionEvaluator implements Evaluator {
     @Override
     public boolean evaluate(JsonNode data) {
         for (Condition condition : conditions) {
-            if (condition.evaluate(data)) {
-                log.info("Matched {} conditions for {}", condition.getId(), data);
-                return true;
+            if (!condition.evaluate(data)) {
+                log.info("Data didn't match {} conditions for {}", condition.getId(), data);
+                return false;
             }
         }
-        log.info("No matched conditions for {}", data);
-        return false;
+        log.info("All conditions matched for {}", data);
+        return true;
     }
 }

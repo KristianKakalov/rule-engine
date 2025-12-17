@@ -40,9 +40,6 @@ public class UserEntity {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "is_vip")
-    private Boolean isVip = false;
-
     @OneToMany(mappedBy = "user")
     private List<OrderEntity> orders = new LinkedList<>();
 

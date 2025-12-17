@@ -137,6 +137,6 @@ class ConditionEvaluatorTest {
         boolean result = evaluator.evaluate(data);
 
         // assert
-        Assertions.assertTrue(result);
+        Assertions.assertFalse(result);
     }
 }
