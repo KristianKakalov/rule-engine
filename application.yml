@@ -9,11 +9,21 @@ logging:
     org.springframework: INFO
     org.hibernate: WARN
 
-  # File output (optional)
   file:
     name: logs/rule-engine.log
 
-  # Console pattern
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/rule_engine_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${DB_DDL_AUTO:update}
+    show-sql: ${SHOW_SQL:true}

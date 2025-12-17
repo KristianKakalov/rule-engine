@@ -8,8 +8,12 @@
   },
   {
     "type": "increment",
-    "target": "user.age",
+    "target": "user.visits",
     "value": 1
+  },
+  {
+    "type": "remove",
+    "target": "user.firstName"
   },
   {
     "type": "remove",
