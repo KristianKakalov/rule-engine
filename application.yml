@@ -1,29 +1,46 @@
+server:
+  port: 8081
+
 app:
   rules:
     conditions-path: "rules/conditions.json"
     transformations-path: "rules/transformations.json"
 
+  kafka:
+    input-topic: input-topic
+    output-topic: output-topic
+    error-topic: error-topic
+
 logging:
   level:
-    com.zetta.ruleengine: DEBUG
-    org.springframework: INFO
+    com.zetta.rule.application: DEBUG
+    org.springframework: WARN
+    org.apache.kafka: WARN
     org.hibernate: WARN
 
   file:
     name: logs/rule-engine.log
 
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/rule_engine_db}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:password}
-    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+    url: jdbc:postgresql://postgres:5432/rule_engine_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: ${DB_DDL_AUTO:update}
-    show-sql: ${SHOW_SQL:true}
+      ddl-auto: update
+    show-sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: rule-engine-group
+    producer:
+      properties:
+        spring.json.add.type.headers: false

@@ -4,6 +4,7 @@ import com.zetta.rule.application.persistence.entity.OrderEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.NullNode;
 
 @Component
 @RequiredArgsConstructor
@@ -18,11 +19,17 @@ public class OrderMapper {
     }
 
     public void updateOrderFromJson(OrderEntity order, JsonNode data) {
-        JsonNode orderNode = data.has(ORDER_KEY) ? data.get(ORDER_KEY) : data;
+        JsonNode orderNode = data.has(ORDER_KEY) ? data.get(ORDER_KEY) : NullNode.getInstance();
 
-        if (orderNode.has("amount") && orderNode.get("amount").isNumber())
+        if (orderNode.has("amount") && orderNode.get("amount").isNumber()) {
             order.setAmount(orderNode.get("amount").asDecimal());
-        if (orderNode.has("totalWithTax") && orderNode.get("totalWithTax").isNumber())
+        } else if (data.has("order.amount") && data.get("order.amount").isNumber()) {
+            order.setAmount(data.get("order.amount").asDecimal());
+        }
+        if (orderNode.has("totalWithTax") && orderNode.get("totalWithTax").isNumber()) {
             order.setTotalWithTax(orderNode.get("totalWithTax").asDecimal());
+        } else if (data.has("order.totalWithTax") && data.get("order.totalWithTax").isNumber()) {
+            order.setAmount(data.get("order.totalWithTax").asDecimal());
+        }
     }
 }

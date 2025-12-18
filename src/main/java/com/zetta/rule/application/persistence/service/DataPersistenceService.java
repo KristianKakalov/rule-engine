@@ -27,7 +27,7 @@ public class DataPersistenceService implements PersistenceService {
 
     @Override
     @Transactional
-    public void persistMessage(String messageId, JsonNode data) {
+    public void persistMessage(JsonNode data) {
         try {
 
             UserEntity user = getOrCreateUser(data);
@@ -39,10 +39,10 @@ public class DataPersistenceService implements PersistenceService {
             orderRepository.save(order);
 
             log.info("Successfully persisted message: {} with user: {} and orderId: {}",
-                    messageId, user.getUsername(), order.getId());
+                    data, user.getUsername(), order.getId());
 
         } catch (Exception e) {
-            log.error("Failed to persist message {}", messageId, e);
+            log.error("Failed to persist message {}", data, e);
             throw new RuntimeException("Failed to persist data", e);
         }
     }

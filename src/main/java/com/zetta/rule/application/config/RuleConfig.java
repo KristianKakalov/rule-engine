@@ -26,16 +26,16 @@ import java.util.List;
 public class RuleConfig {
     private static final Logger log = LoggerFactory.getLogger(RuleConfig.class);
 
-
-    @Value("${app.rules.conditions-path}")
-    private String conditionPath;
-    @Value("${app.rules.transformations-path}")
-    private String transformationPath;
-
+    private final String conditionPath;
+    private final String transformationPath;
     private final ObjectMapper objectMapper;
 
-    public RuleConfig(ObjectMapper objectMapper) {
+    public RuleConfig(ObjectMapper objectMapper,
+                      @Value("${app.rules.conditions-path}") String conditionPath,
+                      @Value("${app.rules.transformations-path}") String transformationPath) {
         this.objectMapper = objectMapper;
+        this.conditionPath = conditionPath;
+        this.transformationPath = transformationPath;
     }
 
     @Bean

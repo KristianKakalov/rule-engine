@@ -60,6 +60,10 @@ public class JsonUtil {
     }
 
     public static Optional<JsonNode> getFieldValue(JsonNode data, String fieldPath) {
+        if (data.has(fieldPath)) {
+            return Optional.ofNullable(data.get(fieldPath));
+        }
+
         String[] parts = fieldPath.split("\\.");
         JsonNode currentNode = data;
 
