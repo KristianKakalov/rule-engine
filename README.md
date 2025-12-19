@@ -28,9 +28,9 @@ Edit these files to customize business rules.
 
 #### Check Logs
 ```bash
-docker-compose logs -f rule-engine
+docker compose logs -f rule-engine
 ```
 #### Stop Services
 ```bash
-docker-compose down
+docker compose down
 ```
