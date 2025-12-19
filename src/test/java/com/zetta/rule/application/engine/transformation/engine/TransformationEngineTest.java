@@ -12,7 +12,8 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TransformationEngineTest {
 
@@ -30,14 +31,10 @@ class TransformationEngineTest {
                     }
                 """);
 
-        Transformation concat =
-                new SetTransformation(
-                        "user.fullName",
-                        new ConcatExpressionTransformation(
-                                mapper.readTree("""
-                                        ["user.firstName", " ", "user.lastName"]""")
-                        )
-                );
+        Transformation concat = new SetTransformation("user.fullName",
+                new ConcatExpressionTransformation(
+                        mapper.readTree("""
+                                ["user.firstName", " ", "user.lastName"]""")));
 
         TransformationEngine engine =
                 new TransformationEngine(List.of(concat));
@@ -109,14 +106,10 @@ class TransformationEngineTest {
                     }
                 """);
 
-        Transformation add =
-                new SetTransformation(
-                        "order.totalWithTax",
-                        new AddExpressionTransformation(
-                                mapper.readTree("""
-                                        ["order.amount", 10]""")
-                        )
-                );
+        Transformation add = new SetTransformation("order.totalWithTax",
+                new AddExpressionTransformation(
+                        mapper.readTree("""
+                                ["order.amount", 10]""")));
 
         TransformationEngine engine =
                 new TransformationEngine(List.of(add));
@@ -142,21 +135,15 @@ class TransformationEngineTest {
                 """);
 
         Transformation concat =
-                new SetTransformation(
-                        "user.fullName",
+                new SetTransformation("user.fullName",
                         new ConcatExpressionTransformation(
                                 mapper.readTree("""
-                                        ["Mr. ", "user.firstName", " ", "user.lastName"]""")                        )
-                );
+                                        ["Mr. ", "user.firstName", " ", "user.lastName"]""")));
 
-        Transformation increment =
-                new IncrementTransformation("user.age", mapper.readTree("1"));
+        Transformation increment = new IncrementTransformation("user.age", mapper.readTree("1"));
+        Transformation remove = new RemoveTransformation("user.lastName");
 
-        Transformation remove =
-                new RemoveTransformation("user.lastName");
-
-        TransformationEngine engine =
-                new TransformationEngine(List.of(concat, increment, remove));
+        TransformationEngine engine = new TransformationEngine(List.of(concat, increment, remove));
 
         // act
         JsonNode result = engine.transform(input);

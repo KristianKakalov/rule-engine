@@ -29,7 +29,7 @@ public class OrderMapper {
         if (orderNode.has("totalWithTax") && orderNode.get("totalWithTax").isNumber()) {
             order.setTotalWithTax(orderNode.get("totalWithTax").asDecimal());
         } else if (data.has("order.totalWithTax") && data.get("order.totalWithTax").isNumber()) {
-            order.setAmount(data.get("order.totalWithTax").asDecimal());
+            order.setTotalWithTax(data.get("order.totalWithTax").asDecimal());
         }
     }
 }
