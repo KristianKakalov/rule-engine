@@ -42,9 +42,8 @@ logging:
   level:
     com.zetta.rule.application: DEBUG
     org.springframework: INFO
-    org.apache.kafka: INFO
+    org.apache.kafka: WARN
     org.hibernate: WARN
-    com.zaxxer.hikari: DEBUG
 
   file:
     name: /app/logs/rule-engine.log
